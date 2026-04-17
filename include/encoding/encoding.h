@@ -31,10 +31,14 @@ public:
 // UTF-8 <-> UTF-16
 std::u16string utf8_to_utf16(std::string_view input);
 std::string    utf16_to_utf8(std::u16string_view input);
+std::u16string utf8_to_utf16be(std::string_view input);
+std::string    utf16be_to_utf8(std::u16string_view input);
 
 // UTF-8 <-> UTF-32
 std::u32string utf8_to_utf32(std::string_view input);
 std::string    utf32_to_utf8(std::u32string_view input);
+std::u32string utf8_to_utf32be(std::string_view input);
+std::string    utf32be_to_utf8(std::u32string_view input);
 
 // UTF-16 <-> UTF-32
 std::u32string utf16_to_utf32(std::u16string_view input);
