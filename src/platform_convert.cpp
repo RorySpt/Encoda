@@ -57,6 +57,11 @@ std::string ansi_to_utf8(std::string_view input)
     return win_convert(input, CP_ACP, CP_UTF8);
 }
 
+std::string convert_cp(std::string_view input, uint32_t from_cp, uint32_t to_cp)
+{
+    return win_convert(input, static_cast<UINT>(from_cp), static_cast<UINT>(to_cp));
+}
+
 std::string wstring_to_utf8(std::wstring_view input)
 {
     if (input.empty()) return {};
@@ -135,6 +140,23 @@ std::string gbk_to_utf8(std::string_view input)   { return iconv_convert(input, 
 // POSIX用空字符串""表示当前locale编码
 std::string utf8_to_ansi(std::string_view input)  { return iconv_convert(input, "UTF-8", ""); }
 std::string ansi_to_utf8(std::string_view input)  { return iconv_convert(input, "", "UTF-8"); }
+
+std::string convert_cp(std::string_view input, uint32_t from_cp, uint32_t to_cp)
+{
+    // 常见 Windows CP 到 iconv 编码名映射
+    auto cp_to_name = [](uint32_t cp) -> const char* {
+        switch (cp) {
+        case 65001: return "UTF-8";
+        case 936:   return "GBK";
+        case 932:   return "SHIFT_JIS";
+        case 949:   return "EUC-KR";
+        case 950:   return "BIG5";
+        case 1252:  return "CP1252";
+        default:    throw ConvertException(std::format("Unsupported code page: {}", cp));
+        }
+    };
+    return iconv_convert(input, cp_to_name(from_cp), cp_to_name(to_cp));
+}
 
 std::string wstring_to_utf8(std::wstring_view input)
 {

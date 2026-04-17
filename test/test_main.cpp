@@ -138,6 +138,16 @@ void test_invalid_utf8()
     puts("PASS: invalid utf8 throws");
 }
 
+void test_convert_cp()
+{
+    // convert_cp: GBK(936) <-> UTF-8(65001)，黄金数据验证
+    std::string utf8     = bytes({0xE4, 0xBD, 0xA0, 0xE5, 0xA5, 0xBD}); // "你好"
+    std::string gbk      = bytes({0xC4, 0xE3, 0xBA, 0xC3});
+    assert(convert_cp(utf8, 65001, 936) == gbk);
+    assert(convert_cp(gbk,  936, 65001) == utf8);
+    puts("PASS: convert_cp GBK <-> UTF-8");
+}
+
 int main()
 {
     test_utf8_utf16();
@@ -153,6 +163,7 @@ int main()
     test_golden_utf8_utf32();
     test_golden_gbk();
     test_invalid_utf8();
+    test_convert_cp();
     puts("All tests passed.");
     return 0;
 }

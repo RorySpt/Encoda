@@ -7,10 +7,11 @@
 | 编码 | 说明 |
 |------|------|
 | UTF-8 | |
-| UTF-16 LE | |
-| UTF-32 LE | |
+| UTF-16 LE / BE | |
+| UTF-32 LE / BE | |
 | GBK | CP936 |
 | ANSI | 系统当前代码页（中文 Windows = GBK，日文 = Shift-JIS 等） |
+| 任意 Code Page | 通过 `convert_cp()` 按编号指定 |
 
 ## 构建
 
@@ -43,8 +44,18 @@ std::string    utf8  = utf16_to_utf8(utf16);
 std::string gbk  = utf8_to_gbk("你好");
 std::string ansi = utf8_to_ansi("你好");  // 自动适配系统代码页
 
-// 通用接口
+// BE 字节序
+std::u16string utf16be = utf8_to_utf16be("你好");
+std::u32string utf32be = utf8_to_utf32be("你好");
+
+// 通用 Charset 接口
 std::string result = convert(input, Charset::gbk, Charset::utf8);
+std::string result = convert(input, Charset::utf16_be, Charset::utf8);
+
+// 按 Code Page 编号转换（Windows 支持所有已安装代码页）
+std::string result = convert_cp(input, 936,   65001); // GBK -> UTF-8
+std::string result = convert_cp(input, 932,   65001); // Shift-JIS -> UTF-8
+std::string result = convert_cp(input, 65001, 949);   // UTF-8 -> EUC-KR
 ```
 
 ## 文件结构

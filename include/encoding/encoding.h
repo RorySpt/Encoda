@@ -59,4 +59,7 @@ std::wstring utf8_to_wstring(std::string_view input);
 // 通用转换接口
 std::string convert(std::string_view input, Charset from, Charset to);
 
+// 按 code page 编号转换（Windows CP 编号，如 932=Shift-JIS, 949=EUC-KR）
+std::string convert_cp(std::string_view input, uint32_t from_cp, uint32_t to_cp);
+
 } // namespace Encoding
