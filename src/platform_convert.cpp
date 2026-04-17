@@ -47,6 +47,16 @@ std::string gbk_to_utf8(std::string_view input)
     return win_convert(input, 936, CP_UTF8);
 }
 
+std::string utf8_to_ansi(std::string_view input)
+{
+    return win_convert(input, CP_UTF8, CP_ACP);
+}
+
+std::string ansi_to_utf8(std::string_view input)
+{
+    return win_convert(input, CP_ACP, CP_UTF8);
+}
+
 std::string wstring_to_utf8(std::wstring_view input)
 {
     if (input.empty()) return {};
@@ -120,8 +130,11 @@ static std::string iconv_convert(std::string_view input, const char* from, const
     return result;
 }
 
-std::string utf8_to_gbk(std::string_view input)  { return iconv_convert(input, "UTF-8", "GBK"); }
-std::string gbk_to_utf8(std::string_view input)  { return iconv_convert(input, "GBK", "UTF-8"); }
+std::string utf8_to_gbk(std::string_view input)   { return iconv_convert(input, "UTF-8", "GBK"); }
+std::string gbk_to_utf8(std::string_view input)   { return iconv_convert(input, "GBK", "UTF-8"); }
+// POSIX用空字符串""表示当前locale编码
+std::string utf8_to_ansi(std::string_view input)  { return iconv_convert(input, "UTF-8", ""); }
+std::string ansi_to_utf8(std::string_view input)  { return iconv_convert(input, "", "UTF-8"); }
 
 std::string wstring_to_utf8(std::wstring_view input)
 {

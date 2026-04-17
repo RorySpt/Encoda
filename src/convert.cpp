@@ -34,6 +34,9 @@ std::string convert(std::string_view input, Charset from, Charset to)
     case Charset::gbk:
         utf8 = gbk_to_utf8(input);
         break;
+    case Charset::ansi:
+        utf8 = ansi_to_utf8(input);
+        break;
     default:
         throw ConvertException(std::format("Unsupported source charset: {}", static_cast<int>(from)));
     }
@@ -55,6 +58,8 @@ std::string convert(std::string_view input, Charset from, Charset to)
     }
     case Charset::gbk:
         return utf8_to_gbk(utf8);
+    case Charset::ansi:
+        return utf8_to_ansi(utf8);
     default:
         throw ConvertException(std::format("Unsupported target charset: {}", static_cast<int>(to)));
     }

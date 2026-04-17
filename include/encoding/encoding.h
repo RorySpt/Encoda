@@ -18,6 +18,7 @@ enum class Charset
     utf32_le,
     utf32_be,
     gbk,
+    ansi,  // 系统当前代码页
 };
 
 // 编码转换异常
@@ -42,6 +43,10 @@ std::u16string utf32_to_utf16(std::u32string_view input);
 // UTF-8 <-> GBK
 std::string utf8_to_gbk(std::string_view input);
 std::string gbk_to_utf8(std::string_view input);
+
+// UTF-8 <-> 系统当前 ANSI 代码页（Windows: CP_ACP，POSIX: 当前 locale）
+std::string utf8_to_ansi(std::string_view input);
+std::string ansi_to_utf8(std::string_view input);
 
 // 宽字符（平台相关）<-> UTF-8
 std::string  wstring_to_utf8(std::wstring_view input);

@@ -66,6 +66,15 @@ void test_convert_generic()
     puts("PASS: convert() generic interface");
 }
 
+void test_ansi()
+{
+    std::string utf8 = U8("你好，世界！");
+    auto ansi = utf8_to_ansi(utf8);
+    auto back = ansi_to_utf8(ansi);
+    assert(back == utf8);
+    puts("PASS: utf8 <-> ansi");
+}
+
 void test_empty()
 {
     assert(utf8_to_utf16("").empty());
@@ -90,6 +99,7 @@ int main()
     test_gbk();
     test_wstring();
     test_convert_generic();
+    test_ansi();
     test_empty();
     test_ascii();
     puts("All tests passed.");
